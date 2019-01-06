@@ -37,8 +37,9 @@ class ViewController: UIViewController {
     let configDirectoryUrl = Realm.Configuration.defaultConfiguration.fileURL?.deletingLastPathComponent()
     let configFileUrl = configDirectoryUrl?.appendingPathComponent("RealmStudy.realm")
     config.fileURL = configFileUrl
-    config.objectTypes = [Book.self]
+    config.objectTypes = [Genre.self, Author.self, Book.self]
     config.shouldCompactOnLaunch = { _, _ -> Bool in true } // always compact on launch
+    config.deleteRealmIfMigrationNeeded = true
 //    config.readOnly = true
 //    config.inMemoryIdentifier = "InMemoryRealmStudy"
     Realm.Configuration.defaultConfiguration = config
@@ -55,10 +56,16 @@ class ViewController: UIViewController {
       }
       
       try realm.write {
-        let book1 = Book()
-        book1.name = "Game of Thrones"
-        book1.releaseDate = date(from: "1997/12/01")!
-        realm.add(book1)
+        let fantasy = Genre(name: "Fantasy", code: 1)
+        
+        let gameOfThrones = Book(id: 1,
+                         name: "Game of Thrones",
+                         releaseDate: date(from: "1997/12/01")!,
+                         genre: fantasy)
+        
+        realm.add(gameOfThrones)
+        
+        assert(gameOfThrones.realm == realm)
       }
       
       print("Seed successfully performed!")
