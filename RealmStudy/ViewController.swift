@@ -7,14 +7,43 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController {
 
+  private var books = [Book]()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    seed()
   }
-
-
+  
+  private func seed() {
+    do {
+      let realm = try Realm()
+      
+      guard realm.objects(Book.self).count == 0 else {
+        print("No seed required")
+        return
+      }
+      
+      try realm.write {
+        let book1 = Book()
+        book1.name = "Game of Thrones"
+        book1.releaseDate = date(from: "1997/12/01")!
+        realm.add(book1)
+      }
+      
+      print("Seed successfully performed!")
+    } catch {
+      print("Could not seed with error: \(error)")
+    }
+  }
+  
+  private func date(from string: String) -> Date? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy/mm/dd"
+    return formatter.date(from: string)
+  }
 }
 

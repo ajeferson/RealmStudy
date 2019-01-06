@@ -13,6 +13,7 @@
 		F38C38C921D42AB400511E7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F38C38C721D42AB400511E7D /* Main.storyboard */; };
 		F38C38CB21D42AB700511E7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F38C38CA21D42AB700511E7D /* Assets.xcassets */; };
 		F38C38CE21D42AB700511E7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F38C38CC21D42AB700511E7D /* LaunchScreen.storyboard */; };
+		F3E215F821E259DA00E3BABD /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E215F721E259DA00E3BABD /* Book.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		F38C38CA21D42AB700511E7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F38C38CD21D42AB700511E7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F38C38CF21D42AB700511E7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3E215F721E259DA00E3BABD /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				F38C38CA21D42AB700511E7D /* Assets.xcassets */,
 				F38C38CC21D42AB700511E7D /* LaunchScreen.storyboard */,
 				F38C38CF21D42AB700511E7D /* Info.plist */,
+				F3E215F721E259DA00E3BABD /* Book.swift */,
 			);
 			path = RealmStudy;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 			files = (
 				F38C38C621D42AB400511E7D /* ViewController.swift in Sources */,
 				F38C38C421D42AB400511E7D /* AppDelegate.swift in Sources */,
+				F3E215F821E259DA00E3BABD /* Book.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
