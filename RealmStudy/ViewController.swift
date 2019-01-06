@@ -20,6 +20,7 @@ class ViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupRealm()
     seed()
     loadBooks()
   }
@@ -29,6 +30,19 @@ class ViewController: UIViewController {
       return
     }
     books = realm.objects(Book.self).map { $0 }
+  }
+  
+  private func setupRealm() {
+    var config = Realm.Configuration()
+    let configDirectoryUrl = Realm.Configuration.defaultConfiguration.fileURL?.deletingLastPathComponent()
+    let configFileUrl = configDirectoryUrl?.appendingPathComponent("RealmStudy.realm")
+    config.fileURL = configFileUrl
+    config.objectTypes = [Book.self]
+    config.shouldCompactOnLaunch = { _, _ -> Bool in true } // always compact on launch
+//    config.readOnly = true
+//    config.inMemoryIdentifier = "InMemoryRealmStudy"
+    Realm.Configuration.defaultConfiguration = config
+    print("Realm configuration is at: \(configFileUrl?.absoluteString ?? "")")
   }
   
   private func seed() {
@@ -48,8 +62,30 @@ class ViewController: UIViewController {
       }
       
       print("Seed successfully performed!")
-    } catch {
-      print("Could not seed with error: \(error)")
+    } catch let error as NSError {
+      print("Could not seed with error: \(error.localizedDescription)")
+      deleteRealmFiles()
+    }
+  }
+  
+  private func deleteRealmFiles() {
+    guard let url = try? Realm().configuration.fileURL,
+      let realmURL = url else {
+      print("Realm configuration has no fileURL")
+      return
+    }
+    let realmURLs = [
+      realmURL,
+      realmURL.appendingPathExtension("lock"),
+      realmURL.appendingPathExtension("note"),
+      realmURL.appendingPathExtension("management")
+    ]
+    for URL in realmURLs {
+      do {
+        try FileManager.default.removeItem(at: URL)
+      } catch let error as NSError {
+        print("Error ocurred when deleting realm file: \(error)")
+      }
     }
   }
   
