@@ -10,12 +10,25 @@ import UIKit
 import RealmSwift
 
 class ViewController: UIViewController {
+  @IBOutlet var tableView: UITableView?
 
-  private var books = [Book]()
+  private var books = [Book]() {
+    didSet {
+      tableView?.reloadData()
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     seed()
+    loadBooks()
+  }
+  
+  private func loadBooks() {
+    guard let realm = try? Realm() else {
+      return
+    }
+    books = realm.objects(Book.self).map { $0 }
   }
   
   private func seed() {
@@ -47,3 +60,22 @@ class ViewController: UIViewController {
   }
 }
 
+extension ViewController: UITableViewDataSource {
+  var formatter: DateFormatter {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .long
+    return dateFormatter
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return books.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+    let book = books[indexPath.row]
+    cell.textLabel?.text = book.name
+    cell.detailTextLabel?.text = formatter.string(from: book.releaseDate)
+    return cell
+  }
+}
