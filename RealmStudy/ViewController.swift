@@ -101,6 +101,54 @@ class ViewController: UIViewController {
     formatter.dateFormat = "yyyy/mm/dd"
     return formatter.date(from: string)
   }
+  
+  private func presentUpdateBookInitialAlert() {
+    let alert = UIAlertController(title: "Update Book", message: "Book's ID", preferredStyle: .alert)
+    alert.addTextField(configurationHandler: nil)
+    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
+      guard let strongSelf = self,
+        let idString = alert.textFields?.first?.text,
+        let id = Int(idString) else {
+          return
+      }
+      strongSelf.presentUpdateBookSecondAlert(id)
+    }))
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
+  
+  private func presentUpdateBookSecondAlert(_ id: Int) {
+    let alert = UIAlertController(title: "Update Book", message: "Book's new name", preferredStyle: .alert)
+    alert.addTextField(configurationHandler: nil)
+    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
+      guard let strongSelf = self,
+        let newName = alert.textFields?.first?.text else {
+          return
+      }
+      DispatchQueue.global(qos: .background).async {
+        guard let realm = try? Realm(),
+          let book = realm.object(ofType: Book.self, forPrimaryKey: id) else {
+            return
+        }
+        do {
+          try realm.write {
+            book.name = newName
+          }
+          DispatchQueue.main.async {
+            strongSelf.tableView?.reloadData()
+          }
+        } catch {
+          print(error)
+        }
+      }
+    }))
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
+  
+  @IBAction func didTouchUpdateButton(_ sender: UIBarButtonItem) {
+    presentUpdateBookInitialAlert()
+  }
 }
 
 extension ViewController: UITableViewDataSource {
