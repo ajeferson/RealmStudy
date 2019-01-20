@@ -23,6 +23,10 @@ class ViewController: UIViewController {
     setupRealm()
     seed()
     loadBooks()
+    
+    let realm = try! Realm()
+    let genres = realm.objects(Genre.self).map { $0 }
+    genres.forEach { print("***** \($0)") }
   }
   
   private func loadBooks() {
@@ -57,11 +61,14 @@ class ViewController: UIViewController {
       
       try realm.write {
         let fantasy = Genre(name: "Fantasy", code: 1)
+        let george = Author(id: 1, name: "George R. R. Martin")
         
         let gameOfThrones = Book(id: 1,
-                         name: "Game of Thrones",
-                         releaseDate: date(from: "1997/12/01")!,
-                         genre: fantasy)
+                                 name: "Game of Thrones",
+                                 releaseDate: date(from: "1997/12/01")!,
+                                 author: george,
+                                 genre: fantasy)
+        fantasy.books.append(gameOfThrones)
         
         realm.add(gameOfThrones)
         

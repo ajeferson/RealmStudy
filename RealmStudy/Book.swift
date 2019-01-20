@@ -10,13 +10,15 @@ import Foundation
 import Realm
 import RealmSwift
 
+// When accessing nested properties, Realm fetches objects as needed
+// by traversing objetcs graph
 class Book: Object {
   @objc dynamic var id = 0
   @objc dynamic var name = ""
   @objc dynamic var sinopsis = ""
   @objc dynamic var releaseDate = Date()
-  @objc dynamic var author: Author?
-  @objc dynamic var genre: Genre?
+  @objc dynamic var author: Author? // one-to-one relationship (also many-to-one)
+  @objc dynamic var genre: Genre?   // one-to-one relationship (also many-to-one)
   let code = RealmOptional<Int>()
   var tempId = 0
   

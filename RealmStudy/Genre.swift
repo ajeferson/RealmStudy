@@ -13,6 +13,7 @@ import RealmSwift
 class Genre: Object {
   @objc dynamic var name = ""
   let code = RealmOptional<Int>()
+  let books = List<Book>() // not an inverse relationship
   
   override static func primaryKey() -> String? {
     return "code"

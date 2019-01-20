@@ -13,7 +13,7 @@ import RealmSwift
 class Author: Object {
   @objc dynamic var id = 0
   @objc dynamic var name = ""
-  let books = List<Book>()
+  let books = LinkingObjects(fromType: Book.self, property: "author")
   
   override static func primaryKey() -> String? {
     return "id"
